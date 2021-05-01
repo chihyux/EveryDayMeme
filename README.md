@@ -7,3 +7,7 @@ use - react-query
 use - Web Extensions API
 
 ## Setup
+npm i
+npm build
+go to `chrome://extensions/`
+add build folder to `Load unpacked`
