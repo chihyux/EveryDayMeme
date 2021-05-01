@@ -1,25 +1,28 @@
-import logo from './logo.svg';
-import './App.css';
+import { useQuery } from 'react-query';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+  const { isLoading, error, data } = useQuery('meme', () =>
+    fetch('https://meme-api.herokuapp.com/gimme').then((res) => res.json())
   );
+
+  if (isLoading)
+    return (
+      <div class='loading-cover'>
+        <div class='loading-spinner'></div>
+      </div>
+    );
+  if (error) return 'An error has occurred: ' + error.message;
+  if (data) {
+    return (
+      <div className='meme-container'>
+        <h1>Every Day Meme</h1>
+        <img src={data.url} alt={data.title} className='meme' />
+        <span>
+          Author: {data.author} from <a href={data.postLink}>reddit</a>
+        </span>
+      </div>
+    );
+  }
 }
 
 export default App;
